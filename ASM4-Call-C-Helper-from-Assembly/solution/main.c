@@ -1,6 +1,10 @@
 #include <inttypes.h>
 #include <stdio.h>
 
+/****************
+*   SOLUTION   *
+****************/
+
 int64_t asm_scaled_clamped_sum(
 	const int32_t *values,
 	int64_t count,

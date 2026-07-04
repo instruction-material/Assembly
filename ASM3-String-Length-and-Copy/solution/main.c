@@ -2,6 +2,10 @@
 #include <stddef.h>
 #include <stdio.h>
 
+/****************
+*   SOLUTION   *
+****************/
+
 uint64_t asm_strlen_simple(const char *text);
 uint64_t asm_strlcpy_simple(char *dest, const char *src, uint64_t capacity);
 

@@ -1,6 +1,10 @@
 #include <inttypes.h>
 #include <stdio.h>
 
+/****************
+*   SOLUTION   *
+****************/
+
 int64_t mystery_score(int64_t value);
 int64_t student_reconstruction(int64_t value);
 

@@ -1,6 +1,10 @@
 #include <inttypes.h>
 #include <stdio.h>
 
+/****************
+*   SOLUTION   *
+****************/
+
 int64_t asm_eval_expression(int64_t left, int64_t right, char op);
 
 int main(void) {

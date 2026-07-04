@@ -2,6 +2,10 @@
 #include <stddef.h>
 #include <stdio.h>
 
+/****************
+*   SOLUTION   *
+****************/
+
 int64_t asm_sum_array(const int32_t *values, int64_t count);
 int64_t asm_find_first_ge(const int32_t *values, int64_t count, int32_t threshold);
 

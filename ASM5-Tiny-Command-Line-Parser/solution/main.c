@@ -1,6 +1,10 @@
 #include <inttypes.h>
 #include <stdio.h>
 
+/****************
+*   SOLUTION   *
+****************/
+
 int asm_streq(const char *left, const char *right);
 int asm_parse_i64(const char *text, int64_t *outValue);
 
