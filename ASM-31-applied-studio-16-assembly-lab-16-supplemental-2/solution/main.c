@@ -7,7 +7,6 @@
 
 #define SAMPLE_VALUE_COUNT 4U
 
-
 /*****************
 *   FUNCTIONS   *
 *****************/
@@ -27,14 +26,15 @@ extern int transform_value(int value);
  * @return Program exit status
  */
 int main(void) {
-	const int values[SAMPLE_VALUE_COUNT] = {3, 7, 11, 19};
-	int total = 0;
+    const int values[SAMPLE_VALUE_COUNT] = {3, 7, 11, 19};
+    int total = 0;
 
-	// Transform each input value and accumulate the total
-	for (size_t value_index = 0U; value_index < SAMPLE_VALUE_COUNT; value_index++) {
-		total += transform_value(values[value_index]);
-	}
+    // Transform each input value and accumulate the total
+    for (size_t value_index = 0U; value_index < SAMPLE_VALUE_COUNT;
+         value_index++) {
+        total += transform_value(values[value_index]);
+    }
 
-	printf("total=%d\n", total);
-	return 0;
+    printf("total=%d\n", total);
+    return 0;
 }
