@@ -1,14 +1,12 @@
-#ifdef __APPLE__
-#define GLOBAL(name) _##name
-#else
-#define GLOBAL(name) name
+#if !defined(__linux__) || !defined(__x86_64__)
+#error "Use the Linux x86-64 System V target."
 #endif
-
 .intel_syntax noprefix
 .text
 
-.globl GLOBAL(asm_scaled_clamped_sum)
-GLOBAL(asm_scaled_clamped_sum):
+.global asm_scaled_clamped_sum
+.type asm_scaled_clamped_sum, @function
+asm_scaled_clamped_sum:
 	push rbp
 	mov rbp, rsp
 	xor rax, rax
@@ -27,6 +25,9 @@ GLOBAL(asm_scaled_clamped_sum):
 	mov rdi, rax
 	mov rsi, rcx
 	mov rdx, r8
-	call GLOBAL(clamp_to_range)
+	call clamp_to_range
 	pop rbp
 	ret
+
+.size asm_scaled_clamped_sum, .-asm_scaled_clamped_sum
+.section .note.GNU-stack,"",@progbits
