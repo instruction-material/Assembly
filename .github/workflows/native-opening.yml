@@ -23,6 +23,13 @@ jobs:
         run: python3 test/verify_opening.py --cc ${{ matrix.compiler }} --proof output/opening-${{ matrix.compiler }}.json
       - name: Verify native calculator contracts and debugger trace
         run: python3 test/verify_calculator.py --cc ${{ matrix.compiler }} --proof output/calculator-${{ matrix.compiler }}.json
+      - name: Verify bounded array contracts and debugger trace
+        run: python3 test/verify_array.py --cc ${{ matrix.compiler }} --proof output/array-${{ matrix.compiler }}.json
+      - name: Verify the documented collection build
+        if: matrix.compiler == 'clang'
+        run: |
+          cmake -S . -B "$RUNNER_TEMP/assembly-collection"
+          cmake --build "$RUNNER_TEMP/assembly-collection" --parallel 1
       - name: Retain native proof
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
