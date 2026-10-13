@@ -1,14 +1,12 @@
-#ifdef __APPLE__
-#define GLOBAL(name) _##name
-#else
-#define GLOBAL(name) name
+#if !defined(__linux__) || !defined(__x86_64__)
+#error "Use the Linux x86-64 System V target."
 #endif
-
 .intel_syntax noprefix
 .text
 
-.globl GLOBAL(asm_strlen_simple)
-GLOBAL(asm_strlen_simple):
+.global asm_strlen_simple
+.type asm_strlen_simple, @function
+asm_strlen_simple:
 	xor rax, rax
 
 .Lstrlen_loop:
@@ -21,8 +19,11 @@ GLOBAL(asm_strlen_simple):
 .Lstrlen_done:
 	ret
 
-.globl GLOBAL(asm_strlcpy_simple)
-GLOBAL(asm_strlcpy_simple):
+.size asm_strlen_simple, .-asm_strlen_simple
+
+.global asm_strlcpy_simple
+.type asm_strlcpy_simple, @function
+asm_strlcpy_simple:
 	xor rcx, rcx
 	test rdx, rdx
 	je .Lcopy_done
@@ -42,13 +43,20 @@ GLOBAL(asm_strlcpy_simple):
 
 .Lterminate:
 	mov BYTE PTR [rdi + rcx], 0
-	mov rax, rcx
-	ret
+	jmp .Lcount_tail
 
 .Lcopy_success:
 	mov rax, rcx
 	ret
 
 .Lcopy_done:
-	xor eax, eax
+	xor ecx, ecx
+
+.Lcount_tail:
+	/* TODO COPY_SOURCE_LENGTH: count the remaining source bytes to NUL.
+	   Do not write more destination bytes; return the full source length. */
+	mov rax, rcx
 	ret
+
+.size asm_strlcpy_simple, .-asm_strlcpy_simple
+.section .note.GNU-stack,"",@progbits
