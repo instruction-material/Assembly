@@ -1,40 +1,19 @@
-#include <stddef.h>
+#include "stack.h"
+#include <inttypes.h>
 #include <stdio.h>
-
-/*****************
-*   CONSTANTS   *
-*****************/
-
-#define SAMPLE_VALUE_COUNT 4U
-
-/*****************
-*   FUNCTIONS   *
-*****************/
-
-/**
- * @brief Transform one value using the assembly routine
- *
- * @param value Value to transform
- *
- * @return Transformed value
- */
-extern int transform_value(int value);
-
-/**
- * @brief Print the total for the transformed sample values
- *
- * @return Program exit status
- */
+#include <string.h>
+static int64_t model(int64_t a, int64_t b) {
+    const uint64_t bits = (uint64_t)a * 2 + (uint64_t)b * 2 + 10;
+    int64_t result; memcpy(&result, &bits, sizeof(result)); return result;
+}
 int main(void) {
-    const int values[SAMPLE_VALUE_COUNT] = {3, 7, 11, 19};
-    int total = 0;
-
-    // Transform each input value and accumulate the total
-    for (size_t value_index = 0U; value_index < SAMPLE_VALUE_COUNT;
-         value_index++) {
-        total += transform_value(values[value_index]);
-    }
-
-    printf("total=%d\n", total);
+    const int64_t pairs[][2] = {{3,7},{-5,19},{INT64_MAX,1},{INT64_MIN,-1}};
+    for (size_t i = 0; i < sizeof(pairs) / sizeof(pairs[0]); ++i)
+        if (stack_pair(pairs[i][0],pairs[i][1]) != model(pairs[i][0],pairs[i][1])) {
+            fputs("Stack-call task unfinished or incorrect; complete STACK_CALLS and run the contracts.\n",stderr);
+            return 78;
+        }
+    for (size_t i = 0; i < sizeof(pairs) / sizeof(pairs[0]); ++i)
+        printf("a=%" PRId64 " b=%" PRId64 " result=%" PRId64 "\n",pairs[i][0],pairs[i][1],stack_pair(pairs[i][0],pairs[i][1]));
     return 0;
 }
