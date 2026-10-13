@@ -42,3 +42,5 @@ Collection binaries are under `build/bin/`. Use each project's independent role 
 ## Learning sequence
 
 Read the target and function contract, predict a small example, edit the named learner task, run the unchanged tests, and record an instruction-level trace. Explain arguments, widths, addresses, flags, branches and the return value. Use the reference to review an already tested attempt and choose optional practice according to the next learning goal.
+
+The reverse-engineering toy project has independent CMake role builds, a missing C reconstruction task, a full-range modular contract, C undefined-behavior checks and instruction-level trace steps. Run `python3 test/verify_reverse.py --cc clang --proof output/reverse-clang.json` (or `--cc gcc`) to verify native reference/completed-learner equivalence and the independent oracle.

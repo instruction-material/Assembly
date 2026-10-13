@@ -1,14 +1,11 @@
-#ifdef __APPLE__
-#define GLOBAL(name) _##name
-#else
-#define GLOBAL(name) name
+#if !defined(__linux__) || !defined(__x86_64__)
+#error "Use Linux x86-64 System V."
 #endif
-
 .intel_syntax noprefix
 .text
-
-.globl GLOBAL(mystery_score)
-GLOBAL(mystery_score):
+.global mystery_score
+.type mystery_score, @function
+mystery_score:
 	mov rax, rdi
 	test rax, rax
 	jns .Labs_done
@@ -32,3 +29,5 @@ GLOBAL(mystery_score):
 .Lhigh_path:
 	add rax, 7
 	ret
+.size mystery_score, .-mystery_score
+.section .note.GNU-stack,"",@progbits
