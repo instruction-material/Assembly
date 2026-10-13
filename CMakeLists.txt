@@ -108,3 +108,15 @@ add_assembly_lab(
 	"ASM6-Reverse-Engineering-Toy-Program/solution/mystery.S"
 	"ASM6-Reverse-Engineering-Toy-Program/solution/reconstructed.c"
 )
+
+add_assembly_lab(
+	asm_unit5_stack_starter
+	"ASM-07-unit-5-the-stack-and-function-calls/starter/main.c"
+	"ASM-07-unit-5-the-stack-and-function-calls/starter/routine.S"
+)
+
+add_assembly_lab(
+	asm_unit5_stack_solution
+	"ASM-07-unit-5-the-stack-and-function-calls/solution/main.c"
+	"ASM-07-unit-5-the-stack-and-function-calls/solution/routine.S"
+)
