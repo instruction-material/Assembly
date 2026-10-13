@@ -25,6 +25,8 @@ jobs:
         run: python3 test/verify_calculator.py --cc ${{ matrix.compiler }} --proof output/calculator-${{ matrix.compiler }}.json
       - name: Verify bounded array contracts and debugger trace
         run: python3 test/verify_array.py --cc ${{ matrix.compiler }} --proof output/array-${{ matrix.compiler }}.json
+      - name: Verify bounded string contracts and debugger trace
+        run: python3 test/verify_string.py --cc ${{ matrix.compiler }} --proof output/string-${{ matrix.compiler }}.json
       - name: Verify the documented collection build
         if: matrix.compiler == 'clang'
         run: |
