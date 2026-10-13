@@ -15,6 +15,10 @@ jobs:
         compiler: [clang, gcc]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Install the required debugger
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gdb
       - name: Verify native build, contracts and debugger trace
         run: python3 test/verify_opening.py --cc ${{ matrix.compiler }} --proof output/opening-${{ matrix.compiler }}.json
       - name: Retain native proof
