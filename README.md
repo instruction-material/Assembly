@@ -16,7 +16,7 @@ Each project has a learner `starter/`, a reference `solution/`, and a `README.md
 
 ## Native setup
 
-For the opening function, calculator, array and string projects, use Linux x86-64, CMake 3.20 or later, Clang or GCC, and GDB. Their role folders contain independent CMake builds and tests. On macOS, use an x86-64 Linux VM or lab; on Windows, use an x86-64 WSL distribution.
+For the opening function, calculator, array, string and C-helper projects, use Linux x86-64, CMake 3.20 or later, Clang or GCC, and GDB. Their role folders contain independent CMake builds and tests. On macOS, use an x86-64 Linux VM or lab; on Windows, use an x86-64 WSL distribution.
 
 Example from a project folder:
 
@@ -37,7 +37,7 @@ cmake -S . -B build
 cmake --build build
 ```
 
-Collection binaries are under `build/bin/`. Use each project's independent role build for its completion contracts. The native CI workflow exercises the opening function, calculator, array and string verifiers with both compilers and real GDB traces. Further project contracts are added as their course audit is completed.
+Collection binaries are under `build/bin/`. Use each project's independent role build for its completion contracts. The native CI workflow exercises the opening function, calculator, array, string and C-helper verifiers with both compilers and real GDB traces. Further project contracts are added as their course audit is completed.
 
 ## Learning sequence
 
