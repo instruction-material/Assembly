@@ -1,40 +1,19 @@
-#include <stddef.h>
+#include "model.h"
+#include <inttypes.h>
 #include <stdio.h>
+#include <string.h>
 
-/*****************
-*   CONSTANTS   *
-*****************/
-
-#define SAMPLE_VALUE_COUNT 4U
-
-/*****************
-*   FUNCTIONS   *
-*****************/
-
-/**
- * @brief Transform one value using the assembly routine
- *
- * @param value Value to transform
- *
- * @return Transformed value
- */
-extern int transform_value(int value);
-
-/**
- * @brief Print the total for the transformed sample values
- *
- * @return Program exit status
- */
 int main(void) {
-    const int values[SAMPLE_VALUE_COUNT] = {3, 7, 11, 19};
-    int total = 0;
-
-    // Transform each input value and accumulate the total
-    for (size_t value_index = 0U; value_index < SAMPLE_VALUE_COUNT;
-         value_index++) {
-        total += transform_value(values[value_index]);
+    const int64_t inputs[][3] = {{6,7,-5},{-9,3,1},{INT64_MAX,2,7},{INT64_MIN,-1,0}};
+    for (size_t i=0;i<sizeof(inputs)/sizeof(inputs[0]);++i) {
+        const int64_t value=inputs[i][0], factor=inputs[i][1], bias=inputs[i][2];
+        const uint64_t bits=(uint64_t)value*(uint64_t)factor+(uint64_t)bias;
+        int64_t expected; memcpy(&expected,&bits,sizeof(expected));
+        if (compiled_score(value,factor,bias)!=expected) {
+            fputs("Compiler model contract failed.\n",stderr); return 1;
+        }
     }
-
-    printf("total=%d\n", total);
+    for (size_t i=0;i<sizeof(inputs)/sizeof(inputs[0]);++i)
+        printf("value=%" PRId64 " factor=%" PRId64 " bias=%" PRId64 " result=%" PRId64 "\n",inputs[i][0],inputs[i][1],inputs[i][2],compiled_score(inputs[i][0],inputs[i][1],inputs[i][2]));
     return 0;
 }
