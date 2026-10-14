@@ -127,17 +127,23 @@ with tempfile.TemporaryDirectory(prefix="assembly-debug-") as work:
     debugger=dict(status="not exercised in emulated local run")
     if not args.skip_debugger:
         traces={}
+        retained=args.proof.parent/("debug-"+args.cc+"-traces")
+        retained.mkdir(exist_ok=True)
         for role,next_symbol,result in [("starter","debug_found",0),("completed","debug_advance",2)]:
             trace,_=run(["gdb","--batch","--nx","-q",temp/(role+"-Debug")/"assembly_debug",
                 "-ex","set disassembly-flavor intel","-ex","tbreak *debug_branch_decision","-ex","run",
                 "-ex",'printf "DEBUG-before index=%lld value=%d\\n", $rcx, (int)$r8',
                 "-ex",'printf "DEBUG-flags SF=%d OF=%d ZF=%d CF=%d\\n", (int)(($eflags>>7)&1), (int)(($eflags>>11)&1), (int)(($eflags>>6)&1), (int)($eflags&1)',
                 "-ex","si","-ex",'printf "DEBUG-after-branch\\n"',"-ex","x/i $pc",
+                "-ex",'printf "DEBUG-next-matches=%d\\n", (void *)$pc == (void *)&'+next_symbol,
                 "-ex","finish","-ex",'printf "DEBUG-result=%lld\\n", $rax',"-ex","continue"],temp)
+            (retained/(role+"-trace.txt")).write_bytes(trace)
             assert b"DEBUG-before index=0 value=-8" in trace
             assert b"DEBUG-flags SF=1 OF=0 ZF=0 CF=0" in trace
             after=trace.split(b"DEBUG-after-branch\n",1)[1].split(b"\n",1)[0]
-            assert ("<"+next_symbol+">").encode() in after,after
+            assert b"DEBUG-next-matches=1" in trace,trace
+            instruction = rb"mov\s+rax,\s*rcx" if role=="starter" else rb"inc\s+rcx"
+            assert re.search(instruction, after),after
             assert ("DEBUG-result="+str(result)).encode() in trace
             traces[role]=trace.decode()
         debugger=dict(status="accepted",faultyAndCorrectedSingleStep=True,traces=traces)
