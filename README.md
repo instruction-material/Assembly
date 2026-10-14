@@ -48,3 +48,7 @@ The reverse-engineering toy project has independent CMake role builds, a missing
 Unit 5 now has a distinct nested assembly-call and balanced stack-frame lab at `ASM-07-unit-5-the-stack-and-function-calls`. Run `python3 test/verify_stack.py --cc clang --proof output/stack-clang.json` (or `--cc gcc`) for native contracts, an independent arithmetic oracle and real GDB traces.
 
 Unit 9 now uses a working C baseline and a compiler-output analysis worksheet. Both -O0 and -O2 listings, linked disassembly, full-width contracts and real GDB are required by `python3 test/verify_compiler.py --cc clang --proof output/compiler-clang.json` (or `--cc gcc`). Successful baseline execution does not complete the worksheet.
+
+## Instruction-level fault lab
+
+Unit 10 now revisits a known array operation as a diagnosis-and-repair project. Its faulty starter builds but fails the signed comparison; preserve the real GDB state transition and repeat the same trace after the minimal correction. Both roles have independent builds and an analysis worksheet.
