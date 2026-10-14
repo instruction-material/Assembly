@@ -25,7 +25,7 @@ function(add_assembly_lab target)
 			-Wall
 			-Wextra
 			-Wpedantic
-			-std=c11
+			-std=c17
 			${ARGN}
 			-o
 			"${output}"
@@ -155,4 +155,18 @@ add_assembly_lab(
 	asm_opening_solution
 	"ASM-04-asm0-setup-and-tooling/solution/main.c"
 	"ASM-04-asm0-setup-and-tooling/solution/routine.S"
+)
+
+add_assembly_lab(
+	asm_unit11_performance_starter
+	"ASM-10-unit-11-performance-and-code-shape/starter/main.c"
+	"ASM-10-unit-11-performance-and-code-shape/starter/dataset.c"
+	"ASM-10-unit-11-performance-and-code-shape/starter/loops.S"
+)
+
+add_assembly_lab(
+	asm_unit11_performance_solution
+	"ASM-10-unit-11-performance-and-code-shape/solution/main.c"
+	"ASM-10-unit-11-performance-and-code-shape/solution/dataset.c"
+	"ASM-10-unit-11-performance-and-code-shape/solution/loops.S"
 )
