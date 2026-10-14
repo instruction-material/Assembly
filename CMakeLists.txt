@@ -144,3 +144,15 @@ add_assembly_lab(
 	"ASM-09-unit-10-debugging-at-instruction-level/solution/main.c"
 	"ASM-09-unit-10-debugging-at-instruction-level/solution/routine.S"
 )
+
+add_assembly_lab(
+	asm_opening_starter
+	"ASM-04-asm0-setup-and-tooling/starter/main.c"
+	"ASM-04-asm0-setup-and-tooling/starter/routine.S"
+)
+
+add_assembly_lab(
+	asm_opening_solution
+	"ASM-04-asm0-setup-and-tooling/solution/main.c"
+	"ASM-04-asm0-setup-and-tooling/solution/routine.S"
+)

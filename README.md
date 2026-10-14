@@ -1,24 +1,27 @@
 # Assembly
 
-Source material for the Assembly course, centered on Linux x86-64 and the System V AMD64 ABI. Use the project guide for the exact target, compiler, tasks and completion contract.
+Source material for the Assembly course, centered on Linux x86-64 and the System V AMD64 ABI. Each project guide defines its target, tasks, build commands and completion contract.
 
-## Project sequence
+## Native project sequence
 
-0. `ASM-04-asm0-setup-and-tooling`: build and trace a mixed C/assembly function.
-1. `ASM1-Integer-Calculator`: signed 64-bit arithmetic, division and bitwise operations.
-2. `ASM2-Array-Sum-and-Search`: bounded array walks and signed first-match search.
-3. `ASM3-String-Length-and-Copy`: byte walks and bounded string copying.
-4. `ASM4-Call-C-Helper-from-Assembly`: calls across the C/assembly boundary.
-5. `ASM5-Tiny-Command-Line-Parser`: process arguments and runtime interaction.
-6. `ASM6-Reverse-Engineering-Toy-Program`: recover the behavior of a course-owned routine.
+| Course stage | Pack | Main purpose |
+| --- | --- | --- |
+| Setup | ASM-04-asm0-setup-and-tooling | Build and trace a mixed C/assembly function |
+| Registers | ASM1-Integer-Calculator | Signed arithmetic, division and bitwise operations |
+| Loops | ASM2-Array-Sum-and-Search | Bounded walks and signed first-match search |
+| Stack | ASM-07-unit-5-the-stack-and-function-calls | Nested calls, live values and balanced frames |
+| ABI | ASM4-Call-C-Helper-from-Assembly | Real C-helper calls, arguments and alignment |
+| Memory | ASM3-String-Length-and-Copy | Byte walks and bounded copying |
+| Runtime | ASM5-Tiny-Command-Line-Parser | Signed operand parsing and command behavior |
+| Compiler output | ASM-08-unit-9-reading-compiler-output | Working baseline plus actual compiler-output analysis |
+| Debugging | ASM-09-unit-10-debugging-at-instruction-level | Deliberate branch fault, minimal repair and repeated trace |
+| Reverse engineering | ASM6-Reverse-Engineering-Toy-Program | Recover a course-owned routine's behavior |
 
-Each project has a learner `starter/`, a reference `solution/`, and a `README.md`. Select the learner role first. The additional `ASM-` folders support unit practice and optional studios; select them according to the site course's learning path.
+Each pack has an independent learner starter/, reference solution/ and shared README.md. Select the learner role first and use the site course's learning path for the additional unit and studio assignments.
 
-## Native setup
+## Native setup and completion
 
-For the opening function, calculator, array, string, C-helper and command-line parser projects, use Linux x86-64, CMake 3.20 or later, Clang or GCC, and GDB. Their role folders contain independent CMake builds and tests. On macOS, use an x86-64 Linux VM or lab; on Windows, use an x86-64 WSL distribution.
-
-Example from a project folder:
+Use Linux x86-64, CMake 3.20 or later, Clang or GCC, GDB and objdump. On macOS use an x86-64 Linux VM/lab; on Windows use an x86-64 WSL distribution. From a selected project folder:
 
 ```sh
 cmake -S starter -B build-starter -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_ASM_COMPILER=clang
@@ -26,29 +29,30 @@ cmake --build build-starter
 ctest --test-dir build-starter --output-on-failure
 ```
 
-An unfinished starter is expected to fail its completion checks. Follow the project guide to complete the named task, predict the output, and repeat the same tests. Build the reference in a separate folder and repeat both with Release and GCC.
+The project guide explains how to interpret those results. In a coding project, an unfinished starter fails the unchanged contracts until its named task is completed. The compiler-output project instead supplies working role programs; complete analysis.md with actual observations. The debugging project compiles but reproduces a known signed-branch error; retain the failing trace before making the minimal repair. Successful code tests alone do not complete either analysis worksheet.
 
-## Collection build and validation
+Use separate folders for reference, GCC and Release builds. Preserve learner work before consulting the reference. Follow the compiler-output guide's explicit -O0/-O2 flags when comparing that project.
 
-The root `CMakeLists.txt` builds the original six-project collection with Clang:
+## Collection build and verification
+
+The root collection builds both role demos for all ten native packs above with Clang. Binaries are under build/bin/:
 
 ```sh
 cmake -S . -B build
 cmake --build build
 ```
 
-Collection binaries are under `build/bin/`. Use each project's independent role build for its completion contracts. The native CI workflow exercises the opening function, calculator, array, string, C-helper and command-line parser verifiers with both compilers and real GDB traces. Further project contracts are added as their course audit is completed.
+This compiles the supplied programs; it does not imply that intentionally unfinished or faulty starters pass their completion contracts. Use each role's independent CMake build and project guide for the required tests and evidence.
 
-## Learning sequence
+The native CI workflow runs all ten project verifiers with Clang and GCC, including actual GDB checks, controlled regressions and the documented collection build. A verifier can also be run from this repository:
 
-Read the target and function contract, predict a small example, edit the named learner task, run the unchanged tests, and record an instruction-level trace. Explain arguments, widths, addresses, flags, branches and the return value. Use the reference to review an already tested attempt and choose optional practice according to the next learning goal.
+```sh
+python3 test/verify_debug.py --cc clang --proof output/debug-clang.json
+python3 test/verify_debug.py --cc gcc --proof output/debug-gcc.json
+```
 
-The reverse-engineering toy project has independent CMake role builds, a missing C reconstruction task, a full-range modular contract, C undefined-behavior checks and instruction-level trace steps. Run `python3 test/verify_reverse.py --cc clang --proof output/reverse-clang.json` (or `--cc gcc`) to verify native reference/completed-learner equivalence and the independent oracle.
+The debugging verifier retains both the original faulty and corrected single-step traces. For the compiler project use verify_compiler.py and record actual generated listings; for the stack project use verify_stack.py and prove real calls/alignment. The other verifier filenames correspond to opening, calculator, array, string, helper, parser and reverse.
 
-Unit 5 now has a distinct nested assembly-call and balanced stack-frame lab at `ASM-07-unit-5-the-stack-and-function-calls`. Run `python3 test/verify_stack.py --cc clang --proof output/stack-clang.json` (or `--cc gcc`) for native contracts, an independent arithmetic oracle and real GDB traces.
+## Learning record
 
-Unit 9 now uses a working C baseline and a compiler-output analysis worksheet. Both -O0 and -O2 listings, linked disassembly, full-width contracts and real GDB are required by `python3 test/verify_compiler.py --cc clang --proof output/compiler-clang.json` (or `--cc gcc`). Successful baseline execution does not complete the worksheet.
-
-## Instruction-level fault lab
-
-Unit 10 now revisits a known array operation as a diagnosis-and-repair project. Its faulty starter builds but fails the signed comparison; preserve the real GDB state transition and repeat the same trace after the minimal correction. Both roles have independent builds and an analysis worksheet.
+Read the target and function contract, predict a small example and follow the project's coding, observation or diagnosis task. Record instruction addresses, values before and after instructions, relevant flags and the evidence for each branch, call or return. Repeat the same trace after a correction, predict a changed case and keep the unchanged contracts passing. A guided session walks through the same evidence and reasoning used for independent study.
