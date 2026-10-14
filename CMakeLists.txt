@@ -132,3 +132,27 @@ add_assembly_lab(
 	"ASM-08-unit-9-reading-compiler-output/solution/main.c"
 	"ASM-08-unit-9-reading-compiler-output/solution/model.c"
 )
+
+add_assembly_lab(
+	asm_unit10_debug_starter
+	"ASM-09-unit-10-debugging-at-instruction-level/starter/main.c"
+	"ASM-09-unit-10-debugging-at-instruction-level/starter/routine.S"
+)
+
+add_assembly_lab(
+	asm_unit10_debug_solution
+	"ASM-09-unit-10-debugging-at-instruction-level/solution/main.c"
+	"ASM-09-unit-10-debugging-at-instruction-level/solution/routine.S"
+)
+
+add_assembly_lab(
+	asm_opening_starter
+	"ASM-04-asm0-setup-and-tooling/starter/main.c"
+	"ASM-04-asm0-setup-and-tooling/starter/routine.S"
+)
+
+add_assembly_lab(
+	asm_opening_solution
+	"ASM-04-asm0-setup-and-tooling/solution/main.c"
+	"ASM-04-asm0-setup-and-tooling/solution/routine.S"
+)

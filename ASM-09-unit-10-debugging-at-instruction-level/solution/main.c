@@ -1,40 +1,15 @@
-#include <stddef.h>
+#include "debug_lab.h"
+#include <inttypes.h>
 #include <stdio.h>
-
-/*****************
-*   CONSTANTS   *
-*****************/
-
-#define SAMPLE_VALUE_COUNT 4U
-
-/*****************
-*   FUNCTIONS   *
-*****************/
-
-/**
- * @brief Transform one value using the assembly routine
- *
- * @param value Value to transform
- *
- * @return Transformed value
- */
-extern int transform_value(int value);
-
-/**
- * @brief Print the total for the transformed sample values
- *
- * @return Program exit status
- */
 int main(void) {
-    const int values[SAMPLE_VALUE_COUNT] = {3, 7, 11, 19};
-    int total = 0;
-
-    // Transform each input value and accumulate the total
-    for (size_t value_index = 0U; value_index < SAMPLE_VALUE_COUNT;
-         value_index++) {
-        total += transform_value(values[value_index]);
+    const int32_t values[] = {-8, -1, 4};
+    const int64_t expected = 2;
+    const int64_t observed = debug_first_nonnegative(values,
+        (int64_t)(sizeof(values) / sizeof(values[0])));
+    printf("observed=%" PRId64 " expected=%" PRId64 "\n", observed, expected);
+    if (observed != expected) {
+        fputs("known signed-comparison bug is still present\n", stderr);
+        return 1;
     }
-
-    printf("total=%d\n", total);
     return 0;
 }
