@@ -46,3 +46,5 @@ Read the target and function contract, predict a small example, edit the named l
 The reverse-engineering toy project has independent CMake role builds, a missing C reconstruction task, a full-range modular contract, C undefined-behavior checks and instruction-level trace steps. Run `python3 test/verify_reverse.py --cc clang --proof output/reverse-clang.json` (or `--cc gcc`) to verify native reference/completed-learner equivalence and the independent oracle.
 
 Unit 5 now has a distinct nested assembly-call and balanced stack-frame lab at `ASM-07-unit-5-the-stack-and-function-calls`. Run `python3 test/verify_stack.py --cc clang --proof output/stack-clang.json` (or `--cc gcc`) for native contracts, an independent arithmetic oracle and real GDB traces.
+
+Unit 9 now uses a working C baseline and a compiler-output analysis worksheet. Both -O0 and -O2 listings, linked disassembly, full-width contracts and real GDB are required by `python3 test/verify_compiler.py --cc clang --proof output/compiler-clang.json` (or `--cc gcc`). Successful baseline execution does not complete the worksheet.

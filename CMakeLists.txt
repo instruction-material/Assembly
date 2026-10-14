@@ -120,3 +120,15 @@ add_assembly_lab(
 	"ASM-07-unit-5-the-stack-and-function-calls/solution/main.c"
 	"ASM-07-unit-5-the-stack-and-function-calls/solution/routine.S"
 )
+
+add_assembly_lab(
+	asm_unit9_compiler_starter
+	"ASM-08-unit-9-reading-compiler-output/starter/main.c"
+	"ASM-08-unit-9-reading-compiler-output/starter/model.c"
+)
+
+add_assembly_lab(
+	asm_unit9_compiler_solution
+	"ASM-08-unit-9-reading-compiler-output/solution/main.c"
+	"ASM-08-unit-9-reading-compiler-output/solution/model.c"
+)
