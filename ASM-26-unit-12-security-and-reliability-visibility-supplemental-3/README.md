@@ -1,14 +1,5 @@
-# Unit 12: Security and Reliability Visibility supplemental 3
+# Runtime Hardening Trace Companion
 
-Course: Assembly
-Module: Unit 12: Security and Reliability Visibility supplemental 3
+This optional investigation follows the Binary Hardening Evidence Lab in the sibling ASM-25-unit-12-security-and-reliability-visibility-supplemental-2 folder. It extends the static comparison with actual entry registers, executed control flow, return values and debugger-policy observations. It does not introduce a second arithmetic implementation.
 
-Use the starter folder first. The starter is intentionally incomplete, and the solution shows one clean way to finish the same build after the student has worked through it.
-
-Suggested flow:
-- Read the module brief and identify the core requirement.
-- Complete the TODO markers in the starter implementation.
-- Test at least one custom case beyond the default example.
-- Compare against the solution only after the student has a working draft.
-
-Quick run hint: `cc main.c routine.S -o app && ./app`
+Read that lab's complete README first, build its baseline and guard-pie profiles on Linux x86-64, and pass their CTest contracts. Its starter and solution folders contain the complete program and trace worksheets. The starter/trace.md and solution/trace.md files here are exact copies for preserving a separate first attempt and reference comparison. Follow the GDB commands in the lab guide, record actual addresses rather than reference addresses, repeat with a changed byte count, and explain the limits of the ASLR conclusion. Keep analysis.md and trace.md as separate deliverables.
