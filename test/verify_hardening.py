@@ -184,8 +184,9 @@ with tempfile.TemporaryDirectory(prefix='assembly-hardening-') as work:
     for feature in ('baseline', 'guard-pie'):
         executable = temp / ('starter-Debug-' + feature) / 'assembly_hardening'
         script = temp / (feature + '.gdb')
-        script.write_text('set pagination off\nset confirm off\nset disassembly-flavor intel\nset disable-randomization off\ntbreak *checksum_c\nrun\nprintf "LAB_C_COUNT=%ld\\n", $rsi\nx/i $pc\ndisassemble checksum_c\nsi\nfinish\nprintf "LAB_C_RETURN=%llu\\n", $rax\ntbreak *checksum_asm\ncontinue\nprintf "LAB_ASM_COUNT=%ld\\n", $rsi\nx/i $pc\ndisassemble checksum_asm\nsi\nfinish\nprintf "LAB_ASM_RETURN=%llu\\n", $rax\ncontinue\n')
+        script.write_text('set pagination off\nset confirm off\nset disassembly-flavor intel\nset disable-randomization off\nshow disable-randomization\ntbreak *checksum_c\nrun\nprintf "LAB_C_COUNT=%ld\\n", $rsi\nx/i $pc\ndisassemble checksum_c\nsi\nfinish\nprintf "LAB_C_RETURN=%llu\\n", $rax\ntbreak *checksum_asm\ncontinue\nprintf "LAB_ASM_COUNT=%ld\\n", $rsi\nx/i $pc\ndisassemble checksum_asm\nsi\nfinish\nprintf "LAB_ASM_RETURN=%llu\\n", $rax\ncontinue\n')
         raw, err = run(['gdb', '--batch', '-x', script, executable], temp)
+        assert b"Disabling randomization of debuggee's virtual address space is off." in raw
         assert b'LAB_C_COUNT=8' in raw and b'LAB_ASM_COUNT=8' in raw
         assert f'LAB_C_RETURN={value}'.encode() in raw
         assert f'LAB_ASM_RETURN={value}'.encode() in raw
@@ -194,7 +195,7 @@ with tempfile.TemporaryDirectory(prefix='assembly-hardening-') as work:
         assert len(re.findall(rb'=> 0x[0-9a-f]+', raw)) >= 2
         traces.append({'feature': feature, 'bothEntriesObserved': True, 'bothReturnsObserved': True,
                            'defaultCount': 8, 'checksum': value, 'raw': save(feature + '-trace.txt', raw + err),
-                           'randomizationSetting': 'off: inferior randomization left enabled',
+                           'randomizationSetting': 'off: normal inferior behavior unchanged',
                            'repeatedAddressesRequired': False, 'canaryFailureExecuted': False})
 assert source_hashes() == before
 record = {'compiler': args.cc, 'version': version, 'sourceHashes': before, 'profiles': profiles,
