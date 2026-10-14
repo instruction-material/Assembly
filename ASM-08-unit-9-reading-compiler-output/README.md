@@ -46,12 +46,12 @@ The first output row is value=6 factor=7 bias=-5 result=37; the later results ar
 
 ## Generate real compiler assembly
 
-From the selected role folder:
+Stay in the project folder used for the builds above. These commands read starter/model.c and write listings alongside the build folders; they do not change directories. For the reference comparison, use solution/model.c and separate output filenames.
 
 ```sh
 mkdir -p observed
-clang -std=c17 -O0 -g -S -masm=intel -fverbose-asm model.c -o observed/model-O0.s
-clang -std=c17 -O2 -g -S -masm=intel -fverbose-asm model.c -o observed/model-O2.s
+clang -std=c17 -O0 -g -S -masm=intel -fverbose-asm starter/model.c -o observed/model-O0.s
+clang -std=c17 -O2 -g -S -masm=intel -fverbose-asm starter/model.c -o observed/model-O2.s
 ```
 
 - -S stops compilation at assembler input, before producing an object or linking.
@@ -62,6 +62,8 @@ clang -std=c17 -O2 -g -S -masm=intel -fverbose-asm model.c -o observed/model-O2.
 Repeat with gcc under different observed filenames. Locate compiled_score in each actual file. Separate labels/directives/comments from instructions. Annotate argument movement, multiplication, addition, representation copying and return. At -O0, look for stack locals or additional moves; at -O2, identify any eliminated copies or combined operations. Treat these as observations, not mandatory instruction templates.
 
 ## Compare text with linked instructions
+
+Continue from the same project folder, where build-O0, build-O2 and observed now exist.
 
 ```sh
 objdump -d -M intel build-O0/assembly_compiler > observed/linked-O0.txt
