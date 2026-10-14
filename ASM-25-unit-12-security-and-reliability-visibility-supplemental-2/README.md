@@ -56,12 +56,13 @@ Complete `analysis.md` with a prediction table, exact commands, function-scoped 
 
 ## Optional runtime trace
 
-Complete `trace.md` after the static comparison. Use GDB on a baseline and a guarded PIE executable, break at both checksum entries, confirm the argument count, step through real instructions and record the two return values. Keep ASLR policy unchanged; `set disable-randomization off` asks GDB to leave randomization enabled for its inferior. Record warnings or restrictions. Actual addresses vary with build and runtime, and equal addresses in two observations are not by themselves a test of system-wide ASLR.
+Complete `trace.md` after the static comparison. Use GDB on a baseline and a guarded PIE executable, break at both checksum entries, confirm the argument count, step through real instructions and record the two return values. Keep ASLR policy unchanged; `set disable-randomization off` leaves the executable's normal randomization behavior unchanged. Record the host policy, debugger setting, warnings and restrictions; the setting alone does not establish whether ASLR is enabled. Actual addresses vary with build and runtime, and equal addresses in two observations are not by themselves a test of system-wide ASLR.
 
 ```text
 set pagination off
 set disassembly-flavor intel
 set disable-randomization off
+show disable-randomization
 tbreak *checksum_c
 run
 info registers rdi rsi rip rsp
