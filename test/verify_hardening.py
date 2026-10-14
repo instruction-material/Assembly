@@ -18,6 +18,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--cc', choices=['clang', 'gcc'], required=True)
 parser.add_argument('--proof', type=Path, required=True)
 args = parser.parse_args()
+args.proof = args.proof.resolve()
 assert platform.system() == 'Linux' and platform.machine() == 'x86_64'
 args.proof.parent.mkdir(parents=True, exist_ok=True)
 retained = args.proof.parent / ('hardening-observations-' + args.cc)
