@@ -170,3 +170,17 @@ add_assembly_lab(
 	"ASM-10-unit-11-performance-and-code-shape/solution/dataset.c"
 	"ASM-10-unit-11-performance-and-code-shape/solution/loops.S"
 )
+
+add_assembly_lab(
+	asm_unit12_hardening_starter
+	"ASM-25-unit-12-security-and-reliability-visibility-supplemental-2/starter/main.c"
+	"ASM-25-unit-12-security-and-reliability-visibility-supplemental-2/starter/model.c"
+	"ASM-25-unit-12-security-and-reliability-visibility-supplemental-2/starter/bytes.S"
+)
+
+add_assembly_lab(
+	asm_unit12_hardening_solution
+	"ASM-25-unit-12-security-and-reliability-visibility-supplemental-2/solution/main.c"
+	"ASM-25-unit-12-security-and-reliability-visibility-supplemental-2/solution/model.c"
+	"ASM-25-unit-12-security-and-reliability-visibility-supplemental-2/solution/bytes.S"
+)
