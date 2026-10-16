@@ -114,3 +114,7 @@ from the documented fourteen-project collection build.
 - [Sign and zero extension](ASM-06-unit-2-registers-and-data-movement-supplemental-3/README.md) compares byte, word and doubleword interpretations with an explicit unsigned C model.
 
 Each role includes its full caller, model, unchanged contracts, ABI probe, build definition and trace worksheet. The native register jobs retain both compilers' objects, source, independently checked result rows and actual single-step observations. Existing required calculator work stays separate.
+
+## Optional comparison and shift investigations
+
+Unit 3 adds signed/unsigned decision predicates and variable-count 64-bit shifts. Each standalone pack contains an unfinished named assembly operation, a separate correct reference, unchanged C17/ABI checks, an independent model and an observation worksheet. Build each selected role with its own CMake project; the required arithmetic project and collection build retain their contracts.
