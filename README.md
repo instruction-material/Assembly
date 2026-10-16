@@ -75,7 +75,7 @@ These optional investigations do not replace the required mixed-language setup
 project. Each has its own CMake build; the collection build above remains the
 fourteen-project sequence and does not build these intentionally failing starters.
 Use the guide's fresh build directories before and after the single named repair.
-Runtime tests do not complete the worksheet. The remaining 34 generic source
+Runtime tests do not complete the worksheet. The remaining 32 generic source
 contexts remain under content audit.
 
 Run the native acceptance with either compiler:
@@ -86,3 +86,24 @@ Run the native acceptance with either compiler:
 Each retains actual preprocessing, object symbols, relocations, disassembly,
 failed and successful links, configured-value runs, CMake commands and process
 lifecycles. Source-only checks never substitute for those native observations.
+
+## Unit 8 owned syscall investigations
+
+The former arithmetic-only transfer and extension folders now contain distinct
+Linux x86-64 activities. One follows raw writes, libc error conversion, an
+actual short write and full-pipe backpressure. The other follows the fourth
+argument through openat and compares actual created modes and raw/libc errors.
+Both retain complete readings, separate roles, strict contracts and trace sheets.
+The existing parser and all fourteen earlier project verifiers remain intact.
+
+Only the named routine.S task differs between learner and reference. The C
+callers create and clean up their own pipes or temporary directories; the
+contracts also check six preserved registers. The dedicated native compiler
+jobs retain actual strace, debugger, object, build and process evidence:
+
+    python3 test/verify_syscall_optional.py --cc clang --proof output/syscall-optional-clang.json
+    python3 test/verify_syscall_optional.py --cc gcc --proof output/syscall-optional-gcc.json
+
+A source-only run is a preparation check, not native acceptance. Each selected
+role builds independently. These intentionally failing starters are separate
+from the documented fourteen-project collection build.

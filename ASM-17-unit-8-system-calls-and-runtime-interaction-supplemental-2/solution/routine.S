@@ -1,22 +1,14 @@
-/*****************
-*   CONSTANTS   *
-*****************/
-
-#define TRANSFORM_OFFSET 5
-
-
-/*****************
-*   FUNCTIONS   *
-*****************/
-
-#ifdef __APPLE__
-.global _transform_value
-// Transform input by doubling it and adding the lesson offset
-_transform_value:
-#else
-.global transform_value
-// Transform input by doubling it and adding the lesson offset
-transform_value:
+#if !defined(__linux__) || !defined(__x86_64__)
+#error "Use Linux x86-64 with the System V AMD64 ABI."
 #endif
-	leal TRANSFORM_OFFSET(%rdi,%rdi), %eax
-	ret
+.intel_syntax noprefix
+.text
+.globl lab_write
+.type lab_write, @function
+lab_write:
+    mov eax, 1
+lab_write_boundary:
+    syscall
+    ret
+.size lab_write, .-lab_write
+.section .note.GNU-stack,"",@progbits

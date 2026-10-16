@@ -89,3 +89,31 @@ jobs:
           path: output/
           if-no-files-found: error
           retention-days: 7
+
+  syscall-optional:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [clang, gcc]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Validate the source inventory and ledger
+        run: ./verify-course-source.sh
+      - name: Prepare owned syscall tracing and debugging
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends binutils strace gdb
+      - name: Verify real writes, fourth arguments, errors and cleanup
+        run: python3 test/verify_syscall_optional.py --cc ${{ matrix.compiler }} --proof output/syscall-optional-${{ matrix.compiler }}.json
+      - name: Retain actual syscall evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: native-syscall-optional-${{ matrix.compiler }}
+          path: output/
+          if-no-files-found: error
+          retention-days: 7
