@@ -7,7 +7,7 @@ Source material for the Assembly course, centered on Linux x86-64 and the System
 | Course stage | Pack | Main purpose |
 | --- | --- | --- |
 | Setup | ASM-04-asm0-setup-and-tooling | Build and trace a mixed C/assembly function |
-| Machine model | ASM-05-unit-1-machine-model-and-toolchain | Effective addresses, raw bytes and load widths |
+| Machine model | ASM-05-unit-1-machine-model-and-toolchain | Source/object/link/load evidence and bounded record loads |
 | Registers | ASM1-Integer-Calculator | Signed arithmetic, division and bitwise operations |
 | Loops | ASM2-Array-Sum-and-Search | Bounded walks and signed first-match search |
 | Stack | ASM-07-unit-5-the-stack-and-function-calls | Nested calls, live values and balanced frames |
