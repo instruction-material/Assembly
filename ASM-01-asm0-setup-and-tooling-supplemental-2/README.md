@@ -20,6 +20,11 @@ this small function returns an integer through EAX. The supplied routine does
 not allocate a stack frame or modify callee-saved registers; `ret` consumes the
 caller's return address.
 
+The source uses GNU AT&T notation: `movl $LAB_VALUE, %eax` writes a
+32-bit immediate into EAX, with the source operand first. The guide's Intel
+disassembly view puts the destination first: the completed default instruction
+is `mov eax,0x2a`. These are two renderings of the same emitted instruction.
+
 ## Environment and files
 
 Use an owned Linux x86-64 VM or WSL environment with CMake 3.20+, GCC or Clang,

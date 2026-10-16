@@ -20,6 +20,11 @@ stage that reports a failure need not be the stage where the wrong choice was
 made. Here `lab_answer` is already global in both roles, so adding another
 global directive does not resolve the macro.
 
+The source uses GNU AT&T notation: `$` marks an immediate and `%eax` names
+the 32-bit destination register. After preprocessing, `movl $41, %eax` appears
+as `mov eax,0x29` in the guide's Intel disassembly view. Source and destination
+order differ between the two notations; the emitted instruction is the same.
+
 ## Environment and files
 
 Use an owned Linux x86-64 VM or WSL environment, CMake 3.20+, GCC or Clang and
