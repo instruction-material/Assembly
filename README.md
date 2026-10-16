@@ -7,6 +7,7 @@ Source material for the Assembly course, centered on Linux x86-64 and the System
 | Course stage | Pack | Main purpose |
 | --- | --- | --- |
 | Setup | ASM-04-asm0-setup-and-tooling | Build and trace a mixed C/assembly function |
+| Machine model | ASM-05-unit-1-machine-model-and-toolchain | Effective addresses, raw bytes and load widths |
 | Registers | ASM1-Integer-Calculator | Signed arithmetic, division and bitwise operations |
 | Loops | ASM2-Array-Sum-and-Search | Bounded walks and signed first-match search |
 | Stack | ASM-07-unit-5-the-stack-and-function-calls | Nested calls, live values and balanced frames |
@@ -16,6 +17,7 @@ Source material for the Assembly course, centered on Linux x86-64 and the System
 | Compiler output | ASM-08-unit-9-reading-compiler-output | Working baseline plus actual compiler-output analysis |
 | Debugging | ASM-09-unit-10-debugging-at-instruction-level | Deliberate branch fault, minimal repair and repeated trace |
 | Performance | ASM-10-unit-11-performance-and-code-shape | Equivalent loops, actual timing and bounded interpretation |
+| Hardening observation | ASM-25-unit-12-security-and-reliability-visibility-supplemental-2 | Real stack guards, PIE and runtime traces |
 | Reverse engineering | ASM6-Reverse-Engineering-Toy-Program | Recover a course-owned routine's behavior |
 
 Each pack has an independent learner starter/, reference solution/ and shared README.md. Select the learner role first and use the site course's learning path for the additional unit and studio assignments.
@@ -36,7 +38,7 @@ Use separate folders for reference, GCC and Release builds. Preserve learner wor
 
 ## Collection build and verification
 
-The root collection builds both role demos for all eleven native packs above with Clang. Binaries are under build/bin/:
+The root collection builds both role demos for all thirteen native packs above with Clang. Binaries are under build/bin/:
 
 ```sh
 cmake -S . -B build
@@ -45,7 +47,7 @@ cmake --build build
 
 This compiles the supplied programs; it does not imply that intentionally unfinished or faulty starters pass their completion contracts. Use each role's independent CMake build and project guide for the required tests and evidence.
 
-The native CI workflow runs all eleven project verifiers with Clang and GCC, including actual GDB checks, controlled regressions and the documented collection build. A verifier can also be run from this repository:
+The native CI workflow runs all thirteen project verifiers with Clang and GCC, including actual GDB checks, controlled regressions and the documented collection build. A verifier can also be run from this repository:
 
 ```sh
 python3 test/verify_debug.py --cc clang --proof output/debug-clang.json

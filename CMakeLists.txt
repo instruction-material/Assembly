@@ -184,3 +184,15 @@ add_assembly_lab(
 	"ASM-25-unit-12-security-and-reliability-visibility-supplemental-2/solution/model.c"
 	"ASM-25-unit-12-security-and-reliability-visibility-supplemental-2/solution/bytes.S"
 )
+
+add_assembly_lab(
+	asm_unit1_record_starter
+	"ASM-05-unit-1-machine-model-and-toolchain/starter/main.c"
+	"ASM-05-unit-1-machine-model-and-toolchain/starter/routine.S"
+)
+
+add_assembly_lab(
+	asm_unit1_record_solution
+	"ASM-05-unit-1-machine-model-and-toolchain/solution/main.c"
+	"ASM-05-unit-1-machine-model-and-toolchain/solution/routine.S"
+)
