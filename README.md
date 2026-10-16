@@ -62,3 +62,27 @@ The performance verifier retains actual timing CSV, disassembly and monotonic-cl
 Read the target and function contract, predict a small example and follow the project's coding, observation or diagnosis task. Record instruction addresses, values before and after instructions, relevant flags and the evidence for each branch, call or return. Repeat the same trace after a correction, predict a changed case and keep the unchanged contracts passing. A guided session walks through the same evidence and reasoning used for independent study.
 
 The Unit 3 arithmetic replacement has complete value/status contracts, independent Python-model checks and real divide-fault/GDB acceptance in its native verifier. Its current source review must pass both compiler jobs before the course selects an immutable site pin.
+
+## Optional setup build investigations
+
+The setup transfer pack investigates a local assembly definition that cannot
+satisfy a separate C object's global reference. The separate extension pack
+compares raw assembly input with assembly preprocessing and follows the resulting
+macro relocation into the link diagnostic. Both include complete readings,
+separate learner/reference roles and a build-evidence worksheet.
+
+These optional investigations do not replace the required mixed-language setup
+project. Each has its own CMake build; the collection build above remains the
+fourteen-project sequence and does not build these intentionally failing starters.
+Use the guide's fresh build directories before and after the single named repair.
+Runtime tests do not complete the worksheet. The remaining 34 generic source
+contexts remain under content audit.
+
+Run the native acceptance with either compiler:
+
+    python3 test/verify_setup_optional.py --cc clang --proof output/setup-optional-clang.json
+    python3 test/verify_setup_optional.py --cc gcc --proof output/setup-optional-gcc.json
+
+Each retains actual preprocessing, object symbols, relocations, disassembly,
+failed and successful links, configured-value runs, CMake commands and process
+lifecycles. Source-only checks never substitute for those native observations.
