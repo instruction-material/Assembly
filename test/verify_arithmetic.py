@@ -137,6 +137,10 @@ with tempfile.TemporaryDirectory(prefix='assembly-arithmetic-') as work:
         assert original.count(old) == 1
         original = original.replace(old, new)
     learner.write_text(original)
+    completed_hashes = {str(p.relative_to(temp / 'completed')): hashlib.sha256(p.read_bytes()).hexdigest()
+                        for p in (temp / 'completed').rglob('*') if p.is_file()}
+    assert set(completed_hashes) == {name.removeprefix('starter/') for name in before if name.startswith('starter/')}
+    assert {name for name, digest in completed_hashes.items() if digest != before['starter/' + name]} == {'routine.S'}
     for role in ['starter', 'solution', 'completed']:
         for profile in ['Debug', 'Release']:
             build = temp / f'{role}-{profile}'
@@ -184,13 +188,21 @@ with tempfile.TemporaryDirectory(prefix='assembly-arithmetic-') as work:
             assert '<arithmetic_c_mix>:' in linked['stdout']
             commands = json.loads((build / 'compile_commands.json').read_text())
             assert len(commands) == 7
+            probe_link = (build / 'CMakeFiles/arithmetic_fault_probe.dir/link.txt').read_text()
+            assert '-fsanitize' not in probe_link and 'arithmetic_fault_probe' in probe_link
+            for item in commands:
+                name = Path(item['file']).name
+                if name in {'main.c', 'model.c', 'tests.c'}:
+                    assert '-fsanitize=undefined' in item['command']
+                if name == 'fault.c':
+                    assert '-fsanitize' not in item['command']
             for item in commands:
                 assert ('-O0' if profile == 'Debug' else '-O2') in item['command']
             profiles.append({'role': role, 'profile': profile, 'configure': configure, 'build': built, 'tests': tests,
                 'contracts': contracts, 'contractCases': 591123, 'independent': independent,
                 'independentCases': len(cases), 'demos': demos, 'invalidCommand': invalid,
                 'faults': faults, 'negativeProbe': negative, 'generated': generated,
-                'compilerListing': listing_text, 'linkedHelper': linked, 'compileCommands': commands})
+                'compilerListing': listing_text, 'linkedHelper': linked, 'compileCommands': commands, 'isolatedFaultProbeLink': probe_link})
     for role in ['solution', 'completed']:
         binary = temp / f'{role}-Debug' / 'assembly_arithmetic'
         trace = gdb(binary, ['tbreak arithmetic_add_step', 'run', 'x/i $pc', 'si',
@@ -234,7 +246,7 @@ receipt = {'event': 'verified-assembly-arithmetic-flags', 'compiler': args.cc, '
     'independentVectorInputSha256': hashlib.sha256(vector_input).hexdigest(),
     'actualDebuggerTraces': traces, 'actualFaultDebuggerTraces': fault_traces,
     'controlledRegressions': regressions, 'independentLearnerCompletedOnly': 'routine.S',
-    'undefinedDivisionFlagsNotAsserted': True, 'sourceFilesUnchanged': True, 'temporaryBuildCleanup': True}
+    'completedSourceFileHashes': completed_hashes, 'onlyRoutineDiffVerified': True, 'undefinedDivisionFlagsNotAsserted': True, 'sourceFilesUnchanged': True, 'temporaryBuildCleanup': True}
 args.proof.write_text(json.dumps(receipt, indent=2) + '\n')
 print(json.dumps({'compiler': args.cc, 'acceptedProfiles': len(profiles),
     'contractCases': sum(p['contractCases'] for p in profiles), 'independentCases': sum(p['independentCases'] for p in profiles),

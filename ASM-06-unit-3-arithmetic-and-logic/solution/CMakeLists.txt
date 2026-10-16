@@ -13,9 +13,15 @@ add_executable(arithmetic_contracts tests.c abi_checks.S)
 target_link_libraries(arithmetic_contracts PRIVATE arithmetic_native)
 add_executable(arithmetic_fault_probe fault.c fault.S)
 foreach(target arithmetic_native assembly_arithmetic arithmetic_contracts arithmetic_fault_probe)
-    target_compile_options(${target} PRIVATE "$<$<COMPILE_LANGUAGE:C>:-Wall;-Wextra;-Wpedantic;-Wconversion;-Werror;-fsanitize=undefined;-fno-sanitize-recover=all>")
+    target_compile_options(${target} PRIVATE "$<$<COMPILE_LANGUAGE:C>:-Wall;-Wextra;-Wpedantic;-Wconversion;-Werror>")
 endforeach()
-foreach(target assembly_arithmetic arithmetic_contracts arithmetic_fault_probe)
+# The separate probe observes the kernel's integer-fault signal directly.
+# Keep the real C oracle/demo/contracts sanitized; no sanitizer handler is
+# linked into the intentional native-fault experiment.
+foreach(target arithmetic_native assembly_arithmetic arithmetic_contracts)
+    target_compile_options(${target} PRIVATE "$<$<COMPILE_LANGUAGE:C>:-fsanitize=undefined;-fno-sanitize-recover=all>")
+endforeach()
+foreach(target assembly_arithmetic arithmetic_contracts)
     target_link_options(${target} PRIVATE -fsanitize=undefined -fno-sanitize-recover=all)
 endforeach()
 include(CTest)

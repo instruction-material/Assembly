@@ -174,6 +174,12 @@ pairs; the probe intentionally omits those guards. Keep each probe separate
 from the ordinary successful contract run. No host signal policy, global core
 setting or external program needs changing.
 
+The C oracle, demo and ordinary contracts keep undefined-behavior sanitization
+enabled. The separately linked fault probe deliberately omits that runtime so
+the experiment observes the kernel SIGFPE directly; Clang's sanitizer handler
+otherwise diagnoses the native divide error and exits one. This target-specific
+control changes neither the public guards nor the normal C checks.
+
 ## Compare one C helper at O0 and O2
 
 The separate C helper returns `(left + right) ^ (left & right)` using uint64_t
