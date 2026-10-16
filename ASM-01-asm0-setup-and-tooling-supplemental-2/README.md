@@ -76,7 +76,7 @@ error has this cause.
 
 ## Make one directive repair
 
-Replace the TODO comment in `routine.S` with `.globl lab_answer`, leaving the
+Replace the `TODO` comment in `routine.S` with `.globl lab_answer`, leaving the
 function body and caller unchanged. From the project root, use a fresh build:
 
 ```sh
