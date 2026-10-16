@@ -1,22 +1,10 @@
-/*****************
-*   CONSTANTS   *
-*****************/
-
-#define TRANSFORM_OFFSET 5
-
-
-/*****************
-*   FUNCTIONS   *
-*****************/
-
-#ifdef __APPLE__
-.global _transform_value
-// Transform input by doubling it and adding the lesson offset
-_transform_value:
-#else
-.global transform_value
-// Transform input by doubling it and adding the lesson offset
-transform_value:
-#endif
-	leal TRANSFORM_OFFSET(%rdi,%rdi), %eax
-	ret
+#include "lab.h"
+.text
+.p2align 2
+.globl lab_answer
+.type lab_answer, @function
+lab_answer:
+    movl $LAB_VALUE, %eax
+    ret
+.size lab_answer, .-lab_answer
+.section .note.GNU-stack,"",@progbits
