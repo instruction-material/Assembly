@@ -107,3 +107,10 @@ jobs retain actual strace, debugger, object, build and process evidence:
 A source-only run is a preparation check, not native acceptance. Each selected
 role builds independently. These intentionally failing starters are separate
 from the documented fourteen-project collection build.
+
+## Register movement investigations
+
+- [Partial-register writes](ASM-05-unit-2-registers-and-data-movement-supplemental-2/README.md) records actual AL, AX, EAX and RAX effects on complete output words.
+- [Sign and zero extension](ASM-06-unit-2-registers-and-data-movement-supplemental-3/README.md) compares byte, word and doubleword interpretations with an explicit unsigned C model.
+
+Each role includes its full caller, model, unchanged contracts, ABI probe, build definition and trace worksheet. The native register jobs retain both compilers' objects, source, independently checked result rows and actual single-step observations. Existing required calculator work stays separate.
