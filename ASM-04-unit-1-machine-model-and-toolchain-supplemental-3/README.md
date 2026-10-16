@@ -117,6 +117,9 @@ Add the later stage breakpoints. At each, retain `x/i $pc`,
 after `si`. Step the following store and inspect its actual output slot with
 `x/gx $rdx` at stage 0, then `$rdx+8`, `$rdx+16`, and the later eight-byte offsets.
 Use the current addresses and disassembly rather than copying reference addresses.
+Each operation and its store are adjacent to the next stage. After stepping the
+store, the current PC is already at that next label: observe it directly rather
+than continuing past its breakpoint. Compare the PC with the named stage address.
 
 ## Completion evidence
 

@@ -198,7 +198,8 @@ def main():
                 script += ["break lab_stage" + str(i) for i in range(len(expected))]
                 script.append("run")
                 for index in range(len(expected)):
-                    if index: script.append("continue")
+                    # The preceding store steps directly onto the next label.
+                    script.append(f'printf "STAGE_ADDRESS {index}=%016lx label=%016lx\\n", $pc, (unsigned long)&lab_stage{index}')
                     if mode == "memory" and index == 0:
                         format_string = "STACK_BYTES=" + "%02x" * 16 + "\\n"
                         arguments = ", ".join(f"(unsigned int)*(unsigned char*)($rsp+{offset})" for offset in range(16))
@@ -215,6 +216,8 @@ def main():
                 command.append(str(directory / "build/app"))
                 trace, _ = run(command, directory, "gdb")
                 for index, wanted in enumerate(expected):
+                    address = re.search(r"STAGE_ADDRESS " + str(index) + r"=([0-9a-f]+) label=([0-9a-f]+)", trace)
+                    assert address and int(address[1], 16) == int(address[2], 16)
                     before = 0 if index == 0 else expected[index-1]
                     assert f"REG_BEFORE {index}={before:016x} source={incoming:016x}" in trace
                     assert f"REG_AFTER {index}={wanted:016x}" in trace and f"REG_MEMORY {index}={wanted:016x}" in trace
