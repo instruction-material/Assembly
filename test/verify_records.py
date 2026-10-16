@@ -7,6 +7,7 @@ import os
 import platform
 import re
 import resource
+import shlex
 import shutil
 import signal
 import subprocess
@@ -69,9 +70,47 @@ def rows(text, changed):
     return parsed
 
 
+
+def artifact_flow(build, role, profile, temp):
+    routine = build / 'CMakeFiles/record_decode.dir/routine.S.o'
+    caller = build / 'CMakeFiles/assembly_demo.dir/main.c.o'
+    binary = build / 'assembly_demo'
+    routine_info = run(['readelf','-hW','-sW',routine], temp)
+    caller_info = run(['readelf','-Wr','-sW',caller], temp)
+    caller_asm = run(['objdump','-dr','-M','intel','--disassemble=main',caller], temp)
+    linked_info = run(['readelf','-hW','-lW',binary], temp)
+    linked_asm = run(['objdump','-d','-M','intel','--disassemble=decode_record',binary], temp)
+    raw = build / 'decoder-text.bin'
+    extracted = run(['objcopy','--dump-section','.text='+str(raw),routine], temp)
+    assert re.search(r'Type:\s+REL\b',routine_info['stdout'])
+    assert 'ELF64' in routine_info['stdout'] and 'X86-64' in routine_info['stdout']
+    assert re.search(r'FUNC\s+GLOBAL\s+\w+\s+[1-9]\d*\s+decode_record\b',routine_info['stdout'])
+    assert re.search(r'GLOBAL\s+\w+\s+UND\s+decode_record\b',caller_info['stdout'])
+    relocation = re.findall(r'^\s*([0-9a-f]+)\s+[0-9a-f]+\s+(R_X86_64_\w+).*?\bdecode_record\b',caller_info['stdout'],re.MULTILINE)
+    assert relocation and '<main>:' in caller_asm['stdout'] and 'decode_record' in caller_asm['stdout']
+    elf_type = re.search(r'Type:\s+(DYN|EXEC)\b',linked_info['stdout'])
+    assert elf_type and 'INTERP' in linked_info['stdout'] and 'Requesting program interpreter:' in linked_info['stdout']
+    assert '<decode_record>:' in linked_asm['stdout']
+    commands = json.loads((build/'compile_commands.json').read_text())
+    expected_flag = '-O0' if profile == 'Debug' else '-O2'
+    assert len(commands) == 4
+    assert {Path(item['file']).name for item in commands} == {'main.c','routine.S','tests.c','abi_checks.S'}
+    for item in commands:
+        argv = shlex.split(item['command'])
+        assert expected_flag in argv and '-g' in argv
+        if profile == 'Release':
+            assert '-DNDEBUG' in argv
+    return {'role':role,'profile':profile,'routineObject':routine_info,'callerObject':caller_info,
+            'callerDisassembly':caller_asm,'linkedExecutable':linked_info,'linkedDisassembly':linked_asm,
+            'textExtraction':extracted,'routineTextHex':raw.read_bytes().hex(),
+            'callerRelocations':relocation,'executableType':elf_type.group(1),'compileCommands':commands}
+
+
 before = source_hashes()
 version = run([args.cc, '--version'], ROOT)['stdout'].splitlines()[0]
 profiles, rejected, regressions, traces = [], [], [], []
+flows=[]
+tool_versions={tool:run([tool,"--version"],ROOT) for tool in ["readelf","objdump","objcopy"]}
 with tempfile.TemporaryDirectory(prefix='assembly-records-') as work:
     temp = Path(work)
     for role in ['starter', 'solution']:
@@ -91,8 +130,14 @@ with tempfile.TemporaryDirectory(prefix='assembly-records-') as work:
         for profile in ['Debug', 'Release']:
             build = temp / (role + '-' + profile)
             run(['cmake','-S',temp/role,'-B',build,'-DCMAKE_BUILD_TYPE='+profile,
-                 '-DCMAKE_C_COMPILER='+args.cc,'-DCMAKE_ASM_COMPILER='+args.cc], temp)
-            run(['cmake','--build',build,'--parallel','1'], temp)
+                 '-DCMAKE_C_COMPILER='+args.cc,'-DCMAKE_ASM_COMPILER='+args.cc,
+                 '-DCMAKE_C_FLAGS_DEBUG=-O0 -g','-DCMAKE_ASM_FLAGS_DEBUG=-O0 -g',
+                 '-DCMAKE_C_FLAGS_RELEASE=-O2 -g -DNDEBUG','-DCMAKE_ASM_FLAGS_RELEASE=-O2 -g -DNDEBUG',
+                 '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON'], temp)
+            build_invocation=run(['cmake','--build',build,'--verbose','--parallel','1'], temp)
+            flow=artifact_flow(build,role,profile,temp)
+            flow['buildInvocation']=build_invocation
+            flows.append(flow)
             ctest = run(['ctest','--test-dir',build,'--output-on-failure'], temp, expected='failure' if role == 'starter' else 0)
             contracts = run([build/'assembly_contracts'], temp, expected=1 if role == 'starter' else 0)
             demo = run([build/'assembly_demo'], temp, expected=78 if role == 'starter' else 0)
@@ -108,6 +153,13 @@ with tempfile.TemporaryDirectory(prefix='assembly-records-') as work:
             profiles.append({'role': role,'profile': profile,'contractCases': 196609,'contracts': contracts,
                                  'defaultRows': rows(demo['stdout'],False),'changedRows': rows(changed['stdout'],True),
                                  'demo': demo,'changed': changed,'usage': usage,'ctest': ctest})
+    for role in ['starter','solution','completed']:
+        pair=[row for row in flows if row['role']==role]
+        assert len(pair)==2 and pair[0]['routineTextHex'] and pair[0]['routineTextHex']==pair[1]['routineTextHex']
+    missing_output=temp/'deliberately-missing-decoder'
+    missing_definition=run([args.cc,temp/'solution-Debug/CMakeFiles/assembly_demo.dir/main.c.o','-o',missing_output],temp,expected='failure')
+    assert 'decode_record' in missing_definition['stderr'] and not missing_output.exists()
+    assert re.search(r'undefined (reference|symbol)',missing_definition['stderr'],re.IGNORECASE)
     for name, old, new in [
         ('wrong-sign-extension','movsx r9, word ptr [r8]','movzx r9, word ptr [r8]'),
         ('wrong-tag-extension','mov r9d, dword ptr [r8 + 4]','movsxd r9, dword ptr [r8 + 4]'),
@@ -151,10 +203,12 @@ receipt = {'event': 'verified-assembly-record-model', 'compiler': args.cc,'compi
                'target': 'Linux x86-64 System V','sourceFileHashes': before,
                'acceptedProfiles': profiles,'unfinishedProfilesRejected': rejected,
                'controlledRegressions': regressions,'debuggerTraces': traces,
+               'artifactFlows':flows,'toolVersions':tool_versions,'missingDefinitionRejected':missing_definition,
+               'handwrittenTextUnchangedByOptimization':True,
                'independentLearnerCompletedOnly': 'routine.S','sourceFilesUnchanged': True,
                'temporaryBuildCleanup': True}
 args.proof.write_text(json.dumps(receipt,indent=2)+'\n')
 print(json.dumps({'event': receipt['event'],'compiler': args.cc,'acceptedProfiles': len(profiles),
                       'contractCases': sum(x['contractCases'] for x in profiles),
                       'unfinishedProfilesRejected': len(rejected),'controlledRegressionsRejected': len(regressions),
-                      'actualDebuggerTraces': len(traces),'sourceFilesUnchanged': True,'temporaryBuildCleanup': True}))
+                      'actualDebuggerTraces': len(traces),'artifactFlows':len(flows),'missingDefinitionRejected':True,'sourceFilesUnchanged': True,'temporaryBuildCleanup': True}))

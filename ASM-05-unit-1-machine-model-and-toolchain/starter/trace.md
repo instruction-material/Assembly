@@ -1,5 +1,28 @@
 # Address and width trace
 
+## Required source/object/link/load record
+
+This worksheet continues the same core decoder attempt. Record the caller and
+assembly object paths, ELF class/type/machine, the defined decoder symbol, the
+caller's undefined reference, actual relocation offset/type, linked decoder
+address, executable headers/interpreter, and the runtime address seen in GDB.
+Explain what each stage supplies and what it has not established yet. Retain
+the untouched starter's runtime failure beside its successful build and link.
+
+Compare actual -O0 and -O2 compile commands and C caller disassembly in separate
+build folders. Distinguish changes in the C caller from the handwritten decoder
+instruction bytes. Keep the default and changed outputs for both builds. State
+why whole-file hashes or addresses can change without a decoder .text change,
+and why this comparison makes no timing or universal code-size claim.
+
+| Stage/build | Artifact/command | Symbol or relocation | Actual observation | Meaning and limit |
+| --- | --- | --- | --- | --- |
+| Caller object | | | | |
+| Decoder object | | | | |
+| Linked executable | | | | |
+| Runtime process | | | | |
+| O0 versus O2 | | | | |
+
 Predict each default record from the eight raw bytes before running it.
 Record the Linux x86-64 environment, compiler, build directory and role.
 Keep actual addresses from the current run; never copy a prior run's address.

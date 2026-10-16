@@ -1,6 +1,6 @@
 # Decode a Record: Addresses, Bytes and Register Widths
 
-Assembly, Unit 1. This project reads one selected record from a supplied byte array. It makes the distinction between an address, the bytes stored there and the value produced by a load visible. It is a different task from ASM0's build-and-call setup, the later integer calculator and Unit 7's byte-walking memory routines. Complete one bounded leaf function and its trace; no parser, allocator or general-purpose record system is required.
+Assembly, Unit 1. This project reads one selected record from a supplied byte array. It makes the distinction between an address, the bytes stored there and the value produced by a load visible. It is a different task from ASM0's build-and-call setup, the later integer calculator and Unit 7's byte-walking memory routines. Follow this fixture through source, objects, symbols, relocation, linking and loading, then complete its bounded leaf function and trace. No parser, allocator or general-purpose record system is required.
 
 ## Target, files and build
 
@@ -11,13 +11,55 @@ Select the learner role in the site IDE, save and export its files, then extract
 From the extracted project's root:
 
 ```sh
-cmake -S starter -B build-starter -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_ASM_COMPILER=clang
+cmake -S starter -B build-starter -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_ASM_COMPILER=clang -DCMAKE_C_FLAGS_DEBUG="-O0 -g" -DCMAKE_ASM_FLAGS_DEBUG="-O0 -g" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 cmake --build build-starter --parallel 1
 ctest --test-dir build-starter --output-on-failure
 ./build-starter/assembly_demo
 ```
 
 The supplied starter compiles but deliberately returns zero for every call. Its contracts fail and its demonstration reports an unfinished decoder with exit 78. Retain that result before editing. Change only routine.S to satisfy record.h; leave the C driver, tests and ABI checker intact. Use separate build-reference and build-gcc directories when inspecting the solution or changing compiler. Run the same CMake commands with the corresponding source directory and both compiler options set to gcc for the GCC comparison.
+
+## Follow source through objects, linking and loading
+
+Use the decoder as one small artifact trail. main.c is C source that calls an external function declared in record.h; routine.S defines that function. The compiler driver preprocesses and compiles the C translation unit, and preprocesses and assembles the .S translation unit. Their object files contain machine instructions, sections, symbols and any relocations still needed. CMake archives the assembly object in librecord_decode.a and links it with the caller to produce assembly_demo. An archive is a collection of objects, not an independently runnable program.
+
+The .S file uses Intel syntax because of its explicit directive; compiler output can be requested in either syntax. Intel `mov r9d, dword ptr [r8 + 4]` and AT&T `movl 4(%r8), %r9d` describe the same destination width and memory source. Operand order and notation differ. Compare the disassembly's instruction, its actual bytes, the operand address and the loaded value as four separate observations.
+
+Before completing the starter, inspect the Debug build it already produced:
+
+```sh
+readelf -hW -sW build-starter/CMakeFiles/record_decode.dir/routine.S.o
+readelf -Wr -sW build-starter/CMakeFiles/assembly_demo.dir/main.c.o
+objdump -dr -M intel build-starter/CMakeFiles/assembly_demo.dir/main.c.o
+readelf -hW -lW build-starter/assembly_demo
+objdump -d -M intel --disassemble=decode_record build-starter/assembly_demo
+```
+
+The assembly object is an ELF64 relocatable object, with a defined decode_record function symbol. The caller object has an undefined decode_record symbol and a relocation referring to it. Undefined at this stage describes a reference that another link input supplies. Record the actual relocation offset and type; do not copy one compiler's value into another build's table. The linked program contains the decoder definition at a resolved instruction address. Its ELF header type can be EXEC or DYN depending on the target's linking configuration. Read the program headers and interpreter along with that type; DYN alone does not distinguish every shared object from a position-independent executable or prove a hardening property.
+
+The linker joins the caller, the selected archive member and the required runtime/library inputs. It resolves the static call's reference within this program. Dynamic runtime/library references can still require loader work. The operating system maps the executable and its segments, and the recorded interpreter participates in dynamic loading. C runtime startup eventually calls main. Runtime addresses observed in GDB can differ from the image addresses shown in a static listing, especially for a position-independent executable. Keep the artifact stage and process identity beside every address.
+
+Use the ordinary build command's `--verbose` option to retain its actual compiler and linker invocations. A syntactically valid object can still contain an incorrect function: the untouched decoder builds and links but fails its behavior contracts. A different failure occurs if the decoder's definition is omitted at link time. The automated lab deliberately links the caller object alone to a separate temporary output and checks that the linker rejects its missing decode_record. It leaves the successful executable intact. A successful link, a successful run and a correct decoder are separate checks.
+
+### Compare compiler settings without inventing a speed result
+
+Build a separate Release folder after the learner contracts pass:
+
+```sh
+cmake -S starter -B build-starter-O2 -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_ASM_COMPILER=clang -DCMAKE_C_FLAGS_RELEASE="-O2 -g -DNDEBUG" -DCMAKE_ASM_FLAGS_RELEASE="-O2 -g -DNDEBUG" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+cmake --build build-starter-O2 --verbose --parallel 1
+ctest --test-dir build-starter-O2 --output-on-failure
+./build-starter-O2/assembly_demo
+./build-starter-O2/assembly_demo --changed
+objdump -dr -M intel --disassemble=main build-starter/CMakeFiles/assembly_demo.dir/main.c.o
+objdump -dr -M intel --disassemble=main build-starter-O2/CMakeFiles/assembly_demo.dir/main.c.o
+```
+
+The Debug commands above explicitly select -O0 and the Release commands explicitly select -O2. Their compile_commands.json files record the invocations for each source file. Compare the actual C caller bodies, not whole text dumps that differ merely because a filename changed. The compiler can change the caller's layout and instruction choices while preserving its observed behavior. Record changes or unchanged structure without assuming that optimization always makes every function shorter.
+
+The handwritten decoder has no optimization-dependent source branch. The native lab extracts its actual .text section and compares Debug with Release within each role and compiler. Passing -O2 to the assembly driver does not turn that handwritten function into optimized C. Changes in its C caller and unchanged decoder instructions therefore illustrate different parts of the pipeline. Debug information, whole object hashes and absolute addresses can differ even when these decoder instruction bytes match.
+
+Record Clang/GCC, CMake and binutils versions, flags, object and executable identities, caller reference, relocation, resolved decoder and actual output in trace.md. Repeat the comparison with GCC using a separate build folder. Do not compare elapsed time from these runs as a performance experiment. Unit 9 studies C-to-instruction mapping and optimizer transformations in more depth; Unit 11 adds controlled repeated timing. Here the completion evidence is the complete source/object/link/load trail, preserved behavior and a justified instruction trace.
 
 ## Read the byte-level contract
 
@@ -47,3 +89,5 @@ The native contracts exercise all 65,536 delta bit patterns at three indices on 
 Finish trace.md after code passes. Preserve the original failure, build commands, actual byte/register trace, changed case and limits. The reference is a separate role; compare only after a working attempt. Independent reading follows the same prediction, single-step and explanation sequence that a paced walkthrough pauses through with an instructor. Passing code alone does not complete the explanation.
 
 For syntax detail see the [GNU assembler syntax guide](https://sourceware.org/binutils/docs/as/i386_002dVariations.html) and [memory-reference guide](https://sourceware.org/binutils/docs/as/i386_002dMemory.html). The [x86-64 psABI project](https://gitlab.com/x86-psABIs/x86-64-ABI) maintains the target calling convention.
+
+Artifact and compiler references: [GNU readelf](https://sourceware.org/binutils/docs/binutils/readelf.html), [CMake compile commands](https://cmake.org/cmake/help/latest/variable/CMAKE_EXPORT_COMPILE_COMMANDS.html), and [GCC optimization options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html).

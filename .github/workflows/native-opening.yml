@@ -20,7 +20,7 @@ jobs:
       - name: Install the required debugger
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends gdb
+          sudo apt-get install -y --no-install-recommends gdb binutils
       - name: Verify native build, contracts and debugger trace
         run: python3 test/verify_opening.py --cc ${{ matrix.compiler }} --proof output/opening-${{ matrix.compiler }}.json
       - name: Verify native calculator contracts and debugger trace
