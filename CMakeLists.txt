@@ -196,3 +196,17 @@ add_assembly_lab(
 	"ASM-05-unit-1-machine-model-and-toolchain/solution/main.c"
 	"ASM-05-unit-1-machine-model-and-toolchain/solution/routine.S"
 )
+
+add_assembly_lab(
+    asm_unit3_arithmetic_starter
+    "ASM-06-unit-3-arithmetic-and-logic/starter/main.c"
+    "ASM-06-unit-3-arithmetic-and-logic/starter/model.c"
+    "ASM-06-unit-3-arithmetic-and-logic/starter/routine.S"
+)
+
+add_assembly_lab(
+    asm_unit3_arithmetic_solution
+    "ASM-06-unit-3-arithmetic-and-logic/solution/main.c"
+    "ASM-06-unit-3-arithmetic-and-logic/solution/model.c"
+    "ASM-06-unit-3-arithmetic-and-logic/solution/routine.S"
+)

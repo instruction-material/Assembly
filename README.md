@@ -9,6 +9,7 @@ Source material for the Assembly course, centered on Linux x86-64 and the System
 | Setup | ASM-04-asm0-setup-and-tooling | Build and trace a mixed C/assembly function |
 | Machine model | ASM-05-unit-1-machine-model-and-toolchain | Source/object/link/load evidence and bounded record loads |
 | Registers | ASM1-Integer-Calculator | Signed arithmetic, division and bitwise operations |
+| Arithmetic | ASM-06-unit-3-arithmetic-and-logic | Defined flags, implicit multiply/divide registers and deliberate fault traces |
 | Loops | ASM2-Array-Sum-and-Search | Bounded walks and signed first-match search |
 | Stack | ASM-07-unit-5-the-stack-and-function-calls | Nested calls, live values and balanced frames |
 | ABI | ASM4-Call-C-Helper-from-Assembly | Real C-helper calls, arguments and alignment |
@@ -38,7 +39,7 @@ Use separate folders for reference, GCC and Release builds. Preserve learner wor
 
 ## Collection build and verification
 
-The root collection builds both role demos for all thirteen native packs above with Clang. Binaries are under build/bin/:
+The root collection builds both role demos for all fourteen native packs above with Clang. Binaries are under build/bin/:
 
 ```sh
 cmake -S . -B build
@@ -47,7 +48,7 @@ cmake --build build
 
 This compiles the supplied programs; it does not imply that intentionally unfinished or faulty starters pass their completion contracts. Use each role's independent CMake build and project guide for the required tests and evidence.
 
-The native CI workflow runs all thirteen project verifiers with Clang and GCC, including actual GDB checks, controlled regressions and the documented collection build. A verifier can also be run from this repository:
+The native CI workflow runs all fourteen project verifiers with Clang and GCC, including actual GDB checks, controlled regressions and the documented collection build. A verifier can also be run from this repository:
 
 ```sh
 python3 test/verify_debug.py --cc clang --proof output/debug-clang.json
@@ -59,3 +60,5 @@ The performance verifier retains actual timing CSV, disassembly and monotonic-cl
 ## Learning record
 
 Read the target and function contract, predict a small example and follow the project's coding, observation or diagnosis task. Record instruction addresses, values before and after instructions, relevant flags and the evidence for each branch, call or return. Repeat the same trace after a correction, predict a changed case and keep the unchanged contracts passing. A guided session walks through the same evidence and reasoning used for independent study.
+
+The Unit 3 arithmetic replacement has complete value/status contracts, independent Python-model checks and real divide-fault/GDB acceptance in its native verifier. Its current source review must pass both compiler jobs before the course selects an immutable site pin.
