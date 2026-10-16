@@ -8,6 +8,16 @@ No inactive or support folders are currently outside active catalog links.
 
 ## Active source repairs
 
-The Unit 1 machine-model project now has distinct record-address and load-width contracts. After its native acceptance, 37 other active folders still share the generic transform routine, including the required Unit 3 arithmetic/logic core. These are active repair findings, not inactive material or completed coursework. Optional variants still need a distinct-purpose review.
+Unit 1 has accepted record-address/load-width and complete source/object/link/load
+evidence at immutable pin 2ded92a0103d3e518e08cc152a69428d748aafb7. Its separate
+site integration is in review 225 and requires full site workflow acceptance.
 
-The Unit 1 site integration also requires its named source/object/link/load and O0/O2 comparison scope. The record project now includes that complete reading, artifact worksheet and actual object/symbol/relocation/linked-program validation; this is distinct from the later optimizer and timing units. Native acceptance of this follow-up remains required before selecting its site pin.
+Unit 3 now replaces its unrelated transform with arithmetic results, defined
+flags, one-operand full-width multiplication, guarded signed division, separate
+fault probes and real C compiler listings. Both native compiler jobs and
+independent retained-artifact acceptance remain required before selecting its
+site pin. A source replacement under review is not completed coursework.
+
+The other 36 active source folders still share the generic transform. They map
+to optional transfer/extension/studio contexts, which remain active repair or
+distinct-purpose findings rather than inactive material or completed work.
