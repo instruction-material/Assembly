@@ -116,7 +116,7 @@ preserved registers. It unlinks each created file before the next case.
 
 ```sh
 objdump -d -Mintel --disassemble=lab_openat build-completed/app
-strace -f -yy -s 256 -e trace=openat,mkdir,rmdir,newfstatat,close,unlinkat,umask -o observed-openat.strace ./build-completed/app
+strace -f -yy -s 256 -e trace=openat,mkdir,rmdir,fstat,newfstatat,close,unlinkat,umask -o observed-openat.strace ./build-completed/app
 gdb ./build-completed/app
 ```
 
