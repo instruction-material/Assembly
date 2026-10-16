@@ -118,3 +118,7 @@ Each role includes its full caller, model, unchanged contracts, ABI probe, build
 ## Optional comparison and shift investigations
 
 Unit 3 adds signed/unsigned decision predicates and variable-count 64-bit shifts. Each standalone pack contains an unfinished named assembly operation, a separate correct reference, unchanged C17/ABI checks, an independent model and an observation worksheet. Build each selected role with its own CMake project; the required arithmetic project and collection build retain their contracts.
+
+## Optional memory and effective-address investigations
+
+Unit 1 adds a byte-order/access-width experiment over owned scratch bytes and a separate LEA base/index/scale/displacement experiment. Each selected role is a standalone C17/assembly CMake project with explicit checks and a trace worksheet. Complete the named learner operation before comparing with its separate reference. The required record-decoder project is preserved.
