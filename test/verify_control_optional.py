@@ -166,7 +166,7 @@ def main():
             ctest, _ = run(["ctest", "--test-dir", "build", "--output-on-failure"], directory, "ctest", expected=0 if success else None)
             assert ("100% tests passed" in ctest) == success
             stdout, stderr = run([str(directory / "build/contracts")], directory, "contracts", expected=0 if success else 1)
-            assert ("10269 independent control-model cases" in stdout) == success
+            assert ("10269 independent control-flow cases" in stdout) == success
             if label == "preserved-register": assert "preserved=0" in stderr
             (directory / "oracle-driver.c").write_text(ORACLE_DRIVER)
             run([cc, "-std=c17", "-Wall", "-Wextra", "-Wpedantic", "-Wconversion", "-Werror", "-O2" if build_type == "Release" else "-O0", "-g", "oracle-driver.c", "abi_checks.S", "routine.S", "-o", "oracle"], directory, "oracle-build")
@@ -199,7 +199,7 @@ def main():
                 initial, incoming = demo_inputs(mode, False)
                 expected = unfinished_model(mode, initial, incoming) if label == "untouched" else model(mode, initial, incoming)
                 script = ["set pagination off", "set confirm off", "set startup-with-shell off", "set disable-randomization off", "set disassembly-flavor intel", "set language c", "break lab_operation", "run", "set $steps = 0", "while $pc != (unsigned long)&lab_return && $steps < 256",
-                          'printf "FLOW pc=%016lx offset=%lu a=%016lx count=%016lx index=%016lx mask=%016lx visits=%016lx flags=%lx\\n", $pc, (unsigned long)$pc-(unsigned long)&lab_operation, $rax, $rdi, $rcx, $r8, $r9, $eflags & 0x8c1',
+                          'printf "FLOW pc=%016lx offset=%lu a=%016lx incoming=%016lx output=%016lx count=%016lx index=%016lx mask=%016lx visits=%016lx flags=%lx\\n", $pc, (unsigned long)$pc-(unsigned long)&lab_operation, $rax, $rsi, $rdx, $rdi, $rcx, $r8, $r9, $eflags & 0x8c1',
                           "x/i $pc", "si", "set $steps = $steps + 1", "end",
                           'printf "FLOW_STOP pc=%016lx label=%016lx steps=%lu\\n", $pc, (unsigned long)&lab_return, $steps']
                 for index in range(len(expected)):
