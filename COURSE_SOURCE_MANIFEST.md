@@ -74,3 +74,7 @@ Canonical source repository: `Assembly`
 - Active linked folders: 51
 - Ledgered inactive/support folders: 0
 - Source-like files: 369
+
+## Unit 6 optional source contracts
+
+The two mapped Unit 6 supplemental folders have distinct argument-register and stack-argument investigations. Run test/verify_abi_optional.py with each compiler; require actual native call mappings, helper results, argument-seven slot evidence, preserved registers and rejected regressions before site integration.
