@@ -313,3 +313,31 @@ jobs:
           path: output/
           if-no-files-found: error
           retention-days: 7
+
+  compiler-optional:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [clang, gcc]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Validate source inventory and ledger
+        run: ./verify-course-source.sh
+      - name: Prepare generated-code and argument inspection tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends binutils gdb
+      - name: Verify valid C conversions and alias domains against actual generated code
+        run: python3 test/verify_compiler_optional.py --cc ${{ matrix.compiler }} --proof output/compiler-optional-${{ matrix.compiler }}.json
+      - name: Retain actual source, compiler, contract and debugger evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: native-compiler-optional-${{ matrix.compiler }}
+          path: output/
+          if-no-files-found: error
+          retention-days: 7
