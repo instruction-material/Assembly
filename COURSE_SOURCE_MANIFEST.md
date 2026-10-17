@@ -78,3 +78,7 @@ Canonical source repository: `Assembly`
 ## Unit 6 optional source contracts
 
 The two mapped Unit 6 supplemental folders have distinct argument-register and stack-argument investigations. Run test/verify_abi_optional.py with each compiler; require actual native call mappings, helper results, argument-seven slot evidence, preserved registers and rejected regressions before site integration.
+
+## Unit 7 optional memory contracts
+
+The two mapped Unit 7 supplemental folders separate pointer-table record lookup from bounded overlap copying. Require both compiler jobs, independent value checks and actual owned-memory debugger observations before site integration.
