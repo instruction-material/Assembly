@@ -134,3 +134,7 @@ Unit 5 adds LIFO value-order tracing and a caller-owned frame spanning a nested 
 ## Optional ABI argument investigations
 
 Unit 6 adds a six-register argument mapping repair and a separate seventh-argument stack-slot investigation. Both retain complete readings, unsigned value models, independent contracts and actual call/return trace worksheets. The required C-helper project stays separate.
+
+## Optional Unit 7 memory investigations
+
+Pointer-table lookup separates slot addresses, stored pointers and pinned C-record fields. A separate bounded overlap challenge traces each byte read and write in the correct direction. The required packed-record decoder and non-overlapping string project remain distinct.
