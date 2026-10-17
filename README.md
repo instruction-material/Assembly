@@ -126,3 +126,7 @@ Unit 1 adds a byte-order/access-width experiment over owned scratch bytes and a 
 ## Optional dispatch and loop investigations
 
 Unit 4 adds selected-case fall-through and bounded-loop exit investigations. Their separate C17/assembly workspaces retain explicit boundary checks, native control-flow observations and trace worksheets. The required array-sum/search project is preserved.
+
+## Optional stack investigations
+
+Unit 5 adds LIFO value-order tracing and a caller-owned frame spanning a nested assembly call. Both include predictions, a bounded named repair, independent C/Python value checks and actual stack/return-address observations.

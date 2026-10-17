@@ -1,23 +1,32 @@
 # Source Backlog Ledger
 
-This ledger records top-level source folders that are present in the repository but are not active catalog starter or solution targets. A folder listed here is intentionally not an unresolved audit failure.
-
-Promotion rule: move a folder out of this ledger only after the course text names where it belongs, whether it is starter or solution material, and how the student or tutor verifies it.
-
-No inactive or support folders are currently outside active catalog links.
+All 51 top-level source folders are active catalog targets. No inactive or support folders are currently outside active catalog links.
 
 ## Active source repairs
 
-Unit 1 has accepted record-address/load-width and complete source/object/link/load
-evidence at immutable pin 2ded92a0103d3e518e08cc152a69428d748aafb7. Its separate
-site integration is in review 225 and requires full site workflow acceptance.
+The Unit 5 supplemental folders now provide distinct LIFO-order and nested-call frame investigations with source-matched readings and trace worksheets. Before selecting a site source pin, require the exact review head's GCC and Clang native jobs, actual stack/return observations and independent retained-artifact acceptance. Source preparation alone is not completed coursework.
 
-Unit 3 now replaces its unrelated transform with arithmetic results, defined
-flags, one-operand full-width multiplication, guarded signed division, separate
-fault probes and real C compiler listings. Both native compiler jobs and
-independent retained-artifact acceptance remain required before selecting its
-site pin. A source replacement under review is not completed coursework.
+Twenty-two active reference folders still share the generic arithmetic transform. Their optional transfer, extension and studio roles remain active content or distinct-purpose findings:
 
-The other 36 active source folders still share the generic transform. They map
-to optional transfer/extension/studio contexts, which remain active repair or
-distinct-purpose findings rather than inactive material or completed work.
+- `ASM-01-assembly-lab-15`
+- `ASM-02-assembly-lab-16`
+- `ASM-03-assembly-lab-17`
+- `ASM-11-asm13-expansion-ideas-and-next-steps`
+- `ASM-13-unit-6-calling-conventions-and-abi-supplemental-2`
+- `ASM-14-unit-6-calling-conventions-and-abi-supplemental-3`
+- `ASM-15-unit-7-memory-addressing-and-data-structures-supplemental-2`
+- `ASM-16-unit-7-memory-addressing-and-data-structures-supplemental-3`
+- `ASM-19-unit-9-reading-compiler-output-supplemental-2`
+- `ASM-20-unit-9-reading-compiler-output-supplemental-3`
+- `ASM-21-unit-10-debugging-at-instruction-level-supplemental-2`
+- `ASM-22-unit-10-debugging-at-instruction-level-supplemental-3`
+- `ASM-23-unit-11-performance-and-code-shape-supplemental-2`
+- `ASM-24-unit-11-performance-and-code-shape-supplemental-3`
+- `ASM-27-asm13-expansion-ideas-and-next-steps-supplemental-2`
+- `ASM-28-asm13-expansion-ideas-and-next-steps-supplemental-3`
+- `ASM-29-applied-studio-15-assembly-lab-15-supplemental-2`
+- `ASM-30-applied-studio-15-assembly-lab-15-supplemental-3`
+- `ASM-31-applied-studio-16-assembly-lab-16-supplemental-2`
+- `ASM-32-applied-studio-16-assembly-lab-16-supplemental-3`
+- `ASM-33-applied-studio-17-assembly-lab-17-supplemental-2`
+- `ASM-34-applied-studio-17-assembly-lab-17-supplemental-3`
