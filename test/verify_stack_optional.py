@@ -157,7 +157,7 @@ def main():
             ctest, _ = run(["ctest", "--test-dir", "build", "--output-on-failure"], directory, "ctest", expected=0 if success else None)
             assert ("100% tests passed" in ctest) == success
             stdout, stderr = run([str(directory / "build/contracts")], directory, "contracts", expected=0 if success else 1)
-            assert ("10269 independent stack-flow cases" in stdout) == success
+            assert ("10269 independent stack-frame cases" in stdout) == success
             if label == "preserved-register": assert "preserved=0" in stderr
             (directory / "oracle-driver.c").write_text(ORACLE_DRIVER)
             run([cc, "-std=c17", "-Wall", "-Wextra", "-Wpedantic", "-Wconversion", "-Werror", "-O2" if build_type == "Release" else "-O0", "-g", "oracle-driver.c", "abi_checks.S", "routine.S", "-o", "oracle"], directory, "oracle-build")
