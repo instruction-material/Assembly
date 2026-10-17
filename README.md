@@ -130,3 +130,7 @@ Unit 4 adds selected-case fall-through and bounded-loop exit investigations. The
 ## Optional stack investigations
 
 Unit 5 adds LIFO value-order tracing and a caller-owned frame spanning a nested assembly call. Both include predictions, a bounded named repair, independent C/Python value checks and actual stack/return-address observations.
+
+## Optional ABI argument investigations
+
+Unit 6 adds a six-register argument mapping repair and a separate seventh-argument stack-slot investigation. Both retain complete readings, unsigned value models, independent contracts and actual call/return trace worksheets. The required C-helper project stays separate.
